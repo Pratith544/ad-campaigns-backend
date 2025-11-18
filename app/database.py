@@ -5,7 +5,10 @@ from dotenv import load_dotenv
 
 load_dotenv()
 
-DATABASE_URL = os.getenv("DATABASE_URL", "sqlite:///./db.sqlite")
+DATABASE_URL = os.getenv("DATABASE_URL")
+if not DATABASE_URL:
+    raise Exception("DATABASE_URL is missing!")
+
 
 # For SQLite, disable check_same_thread; it's fine for dev
 engine = create_engine(
