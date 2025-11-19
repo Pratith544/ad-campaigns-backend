@@ -11,13 +11,13 @@ from fastapi.middleware.cors import CORSMiddleware
 
 app = FastAPI(title="Campaigns API", version="1.0")
 
-# Logging
+
 logger = logging.getLogger("uvicorn.error")
 
-# CORS
+
 app.add_middleware(
     CORSMiddleware,
-    allow_origins=ALLOWED_ORIGINS or ["*"],  # in production replace "*" with explicit origin(s)
+    allow_origins=ALLOWED_ORIGINS or ["*"],  
     allow_credentials=True,
     allow_methods=["*"],
     allow_headers=["*"],
