@@ -8,13 +8,22 @@ def get_campaigns(db: Session, status: Optional[str] = None, limit: int = 100, o
         q = q.filter(models.Campaign.status == status)
     return q.order_by(models.Campaign.id).offset(offset).limit(limit).all()
 
-def create_campaign(db: Session, name: str, status: str, clicks: int, cost: float, impressions: int) -> models.Campaign:
+def create_campaign(
+    db: Session,
+    name: str,
+    status: str,
+    clicks: int,
+    cost: float,
+    impressions: int,
+    image_url: str,
+) -> models.Campaign:
     campaign = models.Campaign(
         name=name,
         status=status,
         clicks=clicks,
         cost=cost,
-        impressions=impressions
+        impressions=impressions,
+        image_url=image_url,
     )
     db.add(campaign)
     db.commit()

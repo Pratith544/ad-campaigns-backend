@@ -6,6 +6,7 @@ class CampaignBase(BaseModel):
     clicks: int
     cost: float
     impressions: int
+    image_url: str
 
 class Campaign(CampaignBase):
     id: int

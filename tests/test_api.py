@@ -2,6 +2,7 @@ import pytest
 from fastapi.testclient import TestClient
 from sqlalchemy import create_engine
 from sqlalchemy.orm import sessionmaker
+from sqlalchemy.pool import StaticPool
 
 from app.main import app, _normalize_status
 from app.database import Base, get_db
@@ -9,7 +10,11 @@ from app import models
 
 
 # Create an in-memory SQLite database for tests
-engine = create_engine("sqlite://", connect_args={"check_same_thread": False})
+engine = create_engine(
+    "sqlite://",
+    connect_args={"check_same_thread": False},
+    poolclass=StaticPool,
+)
 TestingSessionLocal = sessionmaker(bind=engine, autocommit=False, autoflush=False)
 
 Base.metadata.create_all(bind=engine)
@@ -26,6 +31,7 @@ def seed_data():
                     clicks=10,
                     cost=1.5,
                     impressions=100,
+                    image_url="https://example.com/demo-active.jpg",
                 ),
                 models.Campaign(
                     name="Demo Paused",
@@ -33,6 +39,7 @@ def seed_data():
                     clicks=5,
                     cost=0.5,
                     impressions=50,
+                    image_url="https://example.com/demo-paused.jpg",
                 ),
             ]
         )
@@ -69,6 +76,7 @@ def test_campaigns_returns_data():
     payload = response.json()
     assert isinstance(payload, list)
     assert any(c["status"] == "Active" for c in payload)
+    assert all("image_url" in c and c["image_url"] for c in payload)
 
 
 @pytest.mark.parametrize("status_input", ["active", "ACTIVE", "Paused"])
