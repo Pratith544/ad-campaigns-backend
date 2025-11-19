@@ -1,4 +1,4 @@
--- Campaigns table schema and sample data for quick provisioning
+
 CREATE TABLE IF NOT EXISTS campaigns (
     id INTEGER PRIMARY KEY,
     name TEXT NOT NULL,
